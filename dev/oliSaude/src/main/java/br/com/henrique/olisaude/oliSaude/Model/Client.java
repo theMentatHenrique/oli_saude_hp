@@ -35,8 +35,24 @@ public class Client {
             inverseJoinColumns = @JoinColumn(name = "health_problem_id"))
     private List<HealthProblem> healthProblems;
 
+    @Column(name = "health_risk")
+    private float healthRisk;
+
     @PreUpdate
     protected void onUpdate() {
         this.updateDate = new Date();
+        this.healthRisk = getMidlleHealthRisk();
+    }
+
+    @PrePersist
+    public void onPersist() {
+        this.healthRisk = getMidlleHealthRisk();
+    }
+
+    private float getMidlleHealthRisk() {
+        if (healthProblems == null || healthProblems.isEmpty()) {return 0;}
+        int sd = healthProblems.stream().mapToInt(HealthProblem::getLevel).sum();
+
+        return (float) ((1 / (1 + Math.exp(-(-2.8 + sd)))) * 100);
     }
 }

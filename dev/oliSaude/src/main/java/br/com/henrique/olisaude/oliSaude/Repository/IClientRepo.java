@@ -9,8 +9,10 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface IClientRepo extends JpaRepository<UUID, Client> {
+public interface IClientRepo extends JpaRepository<Client, UUID> {
 
     @Query("SELECT c FROM client c ORDER BY c.healthRisk DESC LIMIT 10")
     List<Client> findtop10Results();
+
+    Client findByName(String name);
 }

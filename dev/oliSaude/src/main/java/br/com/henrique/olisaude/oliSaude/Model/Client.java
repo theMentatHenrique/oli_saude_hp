@@ -18,7 +18,6 @@ public class Client {
     @GeneratedValue(generator = "UUID")
     private UUID id;
     @NotBlank
-    @Column(unique = true)
     private String name;
 
     @CreationTimestamp
@@ -29,7 +28,7 @@ public class Client {
     @Enumerated(EnumType.STRING)
     private Sexo sexo;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "client_health_problem",
             joinColumns = @JoinColumn(name = "client_id"),
             inverseJoinColumns = @JoinColumn(name = "health_problem_id"))

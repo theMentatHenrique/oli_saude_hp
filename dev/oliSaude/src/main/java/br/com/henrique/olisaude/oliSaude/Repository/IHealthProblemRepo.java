@@ -9,5 +9,5 @@ import br.com.henrique.olisaude.oliSaude.Model.HealthProblem;
 
 @Repository
 public interface IHealthProblemRepo extends JpaRepository<HealthProblem, UUID>{
-    public HealthProblem findbyNameAndLevel(String name, int level);
+    public HealthProblem findHealthProblemByNameAndLevel(String name, int level);
 }

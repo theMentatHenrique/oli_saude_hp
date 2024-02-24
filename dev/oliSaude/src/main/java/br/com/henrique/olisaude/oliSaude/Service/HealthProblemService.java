@@ -13,7 +13,7 @@ public class HealthProblemService {
     private IHealthProblemRepo healthProblemRepo;
 
     public HealthProblem findHealthProblem(String name, int level) {
-        return healthProblemRepo.findbyNameAndLevel(name, level);
+        return healthProblemRepo.findHealthProblemByNameAndLevel(name, level);
     }
     
 }

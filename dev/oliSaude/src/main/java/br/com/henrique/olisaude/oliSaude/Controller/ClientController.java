@@ -3,7 +3,6 @@ package br.com.henrique.olisaude.oliSaude.Controller;
 import br.com.henrique.olisaude.oliSaude.DTO.ClientDTO;
 import br.com.henrique.olisaude.oliSaude.Exception.ClientExistentException;
 import br.com.henrique.olisaude.oliSaude.Exception.ClientNotFoundException;
-import br.com.henrique.olisaude.oliSaude.Model.Client;
 import br.com.henrique.olisaude.oliSaude.Service.ClientService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,31 +27,23 @@ public class ClientController {
             return new ResponseEntity<>(clientService.createClient(clientDTO), HttpStatus.CREATED);
         } catch (ClientExistentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/list")
     public ResponseEntity<?> listAll() {
-        try {
-            return new ResponseEntity<>(clientService.listAll(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(clientService.listAll(), HttpStatus.OK);
     }
     
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateClient(@PathVariable UUID id, @RequestBody ClientDTO clientDTO) {
         try {
-            Client client = clientService.update(id ,clientDTO);
+            var client = clientService.update(id ,clientDTO);
             return new ResponseEntity<>(client, HttpStatus.OK);
         } catch (ClientNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("O id e os dados do cliente devem ser preenchidos", HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -62,8 +53,11 @@ public class ClientController {
             return new ResponseEntity<>(clientService.getClient(id), HttpStatus.OK);
         } catch (ClientNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<?> handleServiceInitializationException(Exception e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

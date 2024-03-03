@@ -40,8 +40,9 @@ public class ClientService {
     }
 
     public Client update(UUID id, ClientDTO clientDTO) {
-        if (id == null || clientDTO == null) {throw new IllegalArgumentException();}
-        clientRepo.findById(id).orElseThrow(ClientNotFoundException::new);
+        if (!clientRepo.existsById(id)) {
+            throw new ClientNotFoundException();
+        }
         Client client = modelMapper.map(clientDTO, Client.class);
         client.setId(id);
         client.setHealthProblems(checkSavedProblems(client.getHealthProblems()));

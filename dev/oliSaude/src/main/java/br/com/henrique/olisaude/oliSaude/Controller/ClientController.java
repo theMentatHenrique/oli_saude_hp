@@ -37,4 +37,9 @@ public class ClientController {
     public ResponseEntity<?> getClient(@PathVariable UUID id) {
         return new ResponseEntity<>(clientService.getClient(id), HttpStatus.OK);
     }
+
+    @GetMapping("/clientsWithMoreHealthRisk")
+    public ResponseEntity<?> getTenClientMoreRisk() {
+        return new ResponseEntity<>(clientService.getTop10ClientsWithRiskProblem(), HttpStatus.OK);
+    }
 }

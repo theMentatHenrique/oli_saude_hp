@@ -1,6 +1,7 @@
 package br.com.henrique.olisaude.oliSaude.Service;
 
 import br.com.henrique.olisaude.oliSaude.DTO.ClientDTO;
+import br.com.henrique.olisaude.oliSaude.DTO.HealthProblemDTO;
 import br.com.henrique.olisaude.oliSaude.Exception.ClientExistentException;
 import br.com.henrique.olisaude.oliSaude.Exception.ClientNotFoundException;
 import br.com.henrique.olisaude.oliSaude.Model.Client;
@@ -25,14 +26,15 @@ public class ClientService {
     private IHealthProblemRepo healthProblemRepo;
     private static final ModelMapper modelMapper = new ModelMapper();
 
-    public Client createClient(ClientDTO clientDTO) {
+    public ClientDTO createClient(ClientDTO clientDTO) {
         Client client = modelMapper.map(clientDTO, Client.class);
         if (clientRepo.findByName(client.getName()) != null) {throw new ClientExistentException();}
 
-        if (client.getHealthProblems() != null) {
+        List<HealthProblem> healthProblems = client.getHealthProblems();
+        if (healthProblems != null && !healthProblems.isEmpty()) {
             client.setHealthProblems(checkSavedProblems(client.getHealthProblems()));
         }
-        return clientRepo.save(client);
+        return modelMapper.map(clientRepo.save(client), ClientDTO.class);
     }
 
     public List<ClientDTO> listAll() {
@@ -59,6 +61,10 @@ public class ClientService {
             }
         }
         return listProblems;
+    }
+
+    public List<HealthProblemDTO> getTop10ClientsWithRiskProblem() {
+        return clientRepo.findtop10Results().stream().map(m -> modelMapper.map(m, HealthProblemDTO.class)).toList();
     }
 
     public Client getClient(UUID id) {

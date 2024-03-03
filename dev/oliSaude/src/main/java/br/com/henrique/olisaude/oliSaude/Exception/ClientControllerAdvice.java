@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,6 +41,12 @@ public class ClientControllerAdvice {
         }
         ErrorDTO errorDTO = createErrorDTO(sb.toString());
         return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvocationTargetException.class)
+    public ResponseEntity<?> MoreTargetsReturned(InvocationTargetException ex) {
+        ErrorDTO errorDTO = createErrorDTO(ex.getMessage());
+        return new ResponseEntity<>(errorDTO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private ErrorDTO createErrorDTO(String message) {

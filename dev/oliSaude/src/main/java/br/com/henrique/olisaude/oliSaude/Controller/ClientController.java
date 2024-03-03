@@ -1,11 +1,7 @@
 package br.com.henrique.olisaude.oliSaude.Controller;
 
 import br.com.henrique.olisaude.oliSaude.DTO.ClientDTO;
-import br.com.henrique.olisaude.oliSaude.Exception.ClientExistentException;
-import br.com.henrique.olisaude.oliSaude.Exception.ClientNotFoundException;
 import br.com.henrique.olisaude.oliSaude.Service.ClientService;
-
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

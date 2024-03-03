@@ -39,7 +39,7 @@ public class ClientService {
         return clientRepo.findAll().stream().map(client -> modelMapper.map(client, ClientDTO.class)).toList();
     }
 
-    public Client update(UUID id, ClientDTO clientDTO) throws ClientNotFoundException, IllegalArgumentException {
+    public Client update(UUID id, ClientDTO clientDTO) {
         if (id == null || clientDTO == null) {throw new IllegalArgumentException();}
         clientRepo.findById(id).orElseThrow(ClientNotFoundException::new);
         Client client = modelMapper.map(clientDTO, Client.class);

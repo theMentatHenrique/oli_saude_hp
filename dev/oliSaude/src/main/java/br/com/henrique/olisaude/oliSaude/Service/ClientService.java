@@ -61,7 +61,7 @@ public class ClientService {
         return listProblems;
     }
 
-    public Client getClient(UUID id)  throws ClientNotFoundException {
+    public Client getClient(UUID id) {
         return clientRepo.findById(id).orElseThrow(ClientNotFoundException::new);
     }
 }

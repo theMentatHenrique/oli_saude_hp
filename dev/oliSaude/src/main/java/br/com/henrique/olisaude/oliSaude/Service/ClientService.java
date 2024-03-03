@@ -25,7 +25,7 @@ public class ClientService {
     private IHealthProblemRepo healthProblemRepo;
     private static final ModelMapper modelMapper = new ModelMapper();
 
-    public Client createClient(ClientDTO clientDTO) throws ClientExistentException {
+    public Client createClient(ClientDTO clientDTO) {
         Client client = modelMapper.map(clientDTO, Client.class);
         if (clientRepo.findByName(client.getName()) != null) {throw new ClientExistentException();}
 
